@@ -13,7 +13,7 @@ jobs:
       matrix:
         node-version: [17.6.0]
         os: [ubuntu-latest]
-        zip-name: [anonymout-chat.zip]
+        zip-name: [anonymous-chat.zip]
     runs-on: ${{ matrix.os }}
     environment: production
     steps:
@@ -50,8 +50,8 @@ jobs:
           username: ${{ secrets.TENCENT_CE_LGQ5_LOGINNAME}}
           script: |
             cd ${{ secrets.ROMATE_PATH }}
-            rm -rf anonymout-chat
-            unzip ${{ matrix.zip-name }} -d anonymout-chat
+            rm -rf anonymous-chat
+            unzip ${{ matrix.zip-name }} -d anonymous-chat
             
 
 
