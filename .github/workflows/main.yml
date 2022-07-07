@@ -33,7 +33,7 @@ jobs:
           VITE_WS_URI: ${{ secrets.VITE_WS_URI}}
         run: npm run build
       - name: zip dist fold # 打包生成的web代码
-        run: zip -r ${{ matrix.zip-name }} dist
+        run: zip -r ${{ matrix.zip-name }} dist/*
       - name: deploy file to server
         uses: wlixcc/SFTP-Deploy-Action@v1.0
         with:
