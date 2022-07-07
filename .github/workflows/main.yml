@@ -1,0 +1,55 @@
+name: Make Docs
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  Build-Docs:
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [17.6.0]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    environment: production
+    steps:
+      - run: echo "🎉 start build"
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # 读取完整历史,如果不是0则读取最新的
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: install required
+        run: npm install
+      - name: build
+        env: 
+          VITE_API_URI: ${{ secrets.VITE_API_URI}}
+          VITE_WS_URI: ${{ secrets.VITE_WS_URI}}
+        run: npm run build
+      - name: zip dist fold # 打包生成的web代码
+        run: zip -r dist.zip dist
+      - name: deploy file to server
+        uses: wlixcc/SFTP-Deploy-Action@v1.0
+        with:
+          username: ${{ secrets.TENCENT_CE_LGQ5_LOGINNAME}}
+          server: ${{ secrets.TENCENT_CE_LGQ5_IP }}
+          ssh_private_key: ${{ secrets.TENCENT_CE_LGQ5 }}
+          local_path: "./dist.zip"
+          remote_path: ${{ secrets.ROMATE_PATH }}
+      - name: unzip # 在服务器端解压代码
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{ secrets.TENCENT_CE_LGQ5 }}
+          host: ${{ secrets.TENCENT_CE_LGQ5_IP }}
+          username: ${{ secrets.TENCENT_CE_LGQ5_LOGINNAME}}
+          script: |
+            cd ${{ secrets.ROMATE_PATH }}
+            rm -rf dist
+            unzip dist.zip dist
+            
+
