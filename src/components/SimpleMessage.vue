@@ -9,7 +9,7 @@
             </div>
             <div class="message-info">
                 <span>
-                    {{ props.user_name }}发表于{{ moment(props.create_at).locale('zh-cn').fromNow() }}
+                    {{ props.user_name }}发表于{{ moment.utc(props.create_at).locale('zh-cn').fromNow() }}
                 </span>
             </div>
 
