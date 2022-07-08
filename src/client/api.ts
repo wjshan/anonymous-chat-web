@@ -1,7 +1,7 @@
 import type { SendMessageObject, ReciveMessageObject, MessageGroupObject, GroupMessageArray } from '@/types/Message';
 import io from 'socket.io-client';
 import axios from 'axios';
-export const socket = io(`${import.meta.env.VITE_WS_URI}`, { path: "/ws/socket.io/", transports: ['websocket', 'polling'] })
+export const socket = io(`${import.meta.env.VITE_WS_URI}`, { path: "/api/ws/socket.io/", transports: ['websocket', 'polling'] })
 const instance = axios.create({
     baseURL: import.meta.env.VITE_API_URI
 })
